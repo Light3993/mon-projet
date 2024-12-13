@@ -75,8 +75,22 @@
             <img src="images/Université-de-Lomé-Togo.jpg" alt="Logo 2">
         </div>
         <h2>Enregistrement Des Étudiants De La Licence Fondamentale</h2>
-        <form id="registrationForm" action="https://formspree.io/f/movqzoqr" method="POST">
-
+<!-- modify this form HTML and place wherever you want your form -->
+<form
+  action="https://formspree.io/f/movqzoqr"
+  method="POST"
+>
+  <label>
+    Your email:
+    <input type="email" name="email">
+  </label>
+  <label>
+    Your message:
+    <textarea name="message"></textarea>
+  </label>
+  <!-- your other form fields go here -->
+  <button type="submit">Send</button>
+</form>
             <div id="inputFields"></div>
             <button type="button" id="nextButton">Suivant</button>
             <input type="submit" value="Soumettre">
