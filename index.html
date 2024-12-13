@@ -35,7 +35,7 @@
             transition: opacity 0.5s ease-in-out; /* Animation d'opacité */
         }
         input[type="submit"] {
-            background-color: #4CAF50;
+            background-color: #4CAF50; /* Couleur verte */
             color: white;
             padding: 10px;
             border: none;
@@ -45,7 +45,7 @@
             display: none; /* Cacher le bouton Soumettre par défaut */
         }
         input[type="submit"]:hover {
-            background-color: #45a049;
+            background-color: #45a049; /* Couleur au survol */
         }
         .logo {
             display: flex;
@@ -75,21 +75,15 @@
             <img src="images/Université-de-Lomé-Togo.jpg" alt="Logo 2">
         </div>
         <h2>Enregistrement Des Étudiants De La Licence Fondamentale</h2>
-<!-- modify this form HTML and place wherever you want your form -->
-<form
-  action="https://formspree.io/f/movqzoqr"
-  method="POST"
->
-  
-</form>
+        <form id="registrationForm" action="https://formspree.io/f/movqzoqr" method="POST">
             <div id="inputFields"></div>
             <button type="button" id="nextButton">Suivant</button>
             <input type="submit" value="Soumettre">
         </form>
         <div id="summary" class="summary hidden"></div>
     </div>
-     <!-- Section Vidéo -->
-     <div class="video-container">
+    <!-- Section Vidéo -->
+    <div class="video-container">
         <h3>Visionnez notre vidéo du jour</h3>
         <video controls>
             <source src="Learn Python in an Animated Way ｜ Log2Base2.mp4" type="video/mp4">
@@ -201,4 +195,3 @@
     </script>
 </body>
 </html>
- 
