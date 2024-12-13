@@ -47,30 +47,6 @@
         input[type="submit"]:hover {
             background-color: #45a049; /* Couleur au survol */
         }
-        .announcement {
-            margin: 20px;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.8);
-            color: black;
-            border-radius: 5px;
-        }
-        .floating-window {
-            position: absolute;
-            width: 300px;
-            height: 200px;
-            background-color: rgba(255, 255, 255, 0.9);
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-        #needs {
-            margin: 20px;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.8);
-            color: black;
-            border-radius: 5px;
-        }
         .logo {
             display: flex;
             justify-content: center;
@@ -217,70 +193,6 @@
         // Commencer à afficher le premier champ
         showNextStep();
     </script>
-    <div class="container" id="loginContainer" style="display:none;">
-        <h2>Connexion</h2>
-        <form id="loginForm">
-            <label for="username">Nom:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Mot de Passe:</label>
-            <input type="password" id="password" name="password" required>
-            <input type="submit" value="Se Connecter">
-        </form>
-    </div>
-
-    <div class="container" id="dashboard" style="display:none;">
-        <h2>Tableau de Bord</h2>
-        <div class="announcement">
-            <h3>Annonces</h3>
-            <p>Aucune annonce pour le moment.</p>
-        </div>
-        <div class="floating-window" id="maths" style="top: 50px; left: 50px;">
-            <h3>Maths</h3>
-            <p>Espace pour ajouter des documents PDF.</p>
-        </div>
-        <div class="floating-window" id="phy1120" style="top: 50px; left: 400px;">
-            <h3>PHY1120</h3>
-            <p>Espace pour ajouter des documents PDF.</p>
-        </div>
-        <div class="floating-window" id="phy1121" style="top: 50px; left: 750px;">
-            <h3>PHY1121</h3>
-            <p>Espace pour ajouter des documents PDF.</p>
-        </div>
-        <div id="needs">
-            <h3>Exprimez vos besoins</h3>
-            <textarea id="userNeeds" rows="4" placeholder="Saisissez vos besoins en termes de documents ou commentaires..."></textarea>
-            <input type="submit" value="Envoyer">
-        </div>
-    </div>
-
-    <script>
-        const registrationForm = document.getElementById('registrationForm');
-        const loginForm = document.getElementById('loginForm');
-        const dashboard = document.getElementById('dashboard');
-        const loginContainer = document.getElementById('loginContainer');
-        const registrationContainer = document.getElementById('registrationContainer');
-
-        registrationForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche l'envoi du formulaire
-            // Ici, vous pouvez ajouter la logique pour sauvegarder les données dans une base de données
-
-            // Afficher la page de connexion après l'enregistrement
-            registrationContainer.style.display = 'none';
-            loginContainer.style.display = 'block';
-        });
-
-        loginForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Empêche l'envoi du formulaire
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Ici, vous pouvez ajouter la logique pour vérifier les identifiants
-            if (username && password) {
-                // Afficher le tableau de bord
-                loginContainer.style.display = 'none';
-                dashboard.style.display = 'block';
-            }
-        });
-    </script>
 </body>
 </html>
+ 
