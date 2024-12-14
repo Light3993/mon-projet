@@ -1,96 +1,34 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import chalk from 'chalk'; // Importer chalk
-import ExcelJS from 'exceljs'; // Importer exceljs
-import fs from 'fs'; // Importer fs pour écrire des fichiers
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set , get, child  } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-const app = express();
-const PORT = 3001;
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAkGsIfvc7VvLG1m82OpyMq6C-ZcBmWQwk",
+  authDomain: "mon-projet-9a526.firebaseapp.com",
+  projectId: "mon-projet-9a526",
+  storageBucket: "mon-projet-9a526.firebasestorage.app",
+  messagingSenderId: "149961784280",
+  appId: "1:149961784280:web:72ce7869d1dbb5259c90ad",
+  measurementId: "G-7TCQDDHL0L"
+};
 
-// Middleware pour analyser les données du formulaire
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.post('/submit', async (req, res) => {
-    const { nom, prenom, date_naissance, address, numero, email, filiere, semestre } = req.body;
-
-    // Créer un objet pour les données
-    const data = {
-        Nom: nom,
-        Prénom: prenom,
-        "Date de Naissance": date_naissance,
-        Adresse: address,
-        "Numéro de Téléphone": numero,
-        Email: email,
-        Filière: filiere,
-        Semestre: semestre
-    };
-
-    // Afficher les informations dans la console en vert
-    console.log(chalk.green('Informations reçues :'));
-    console.table(data); // Afficher les données sous forme de tableau
-
-    // Vous pouvez également créer un objet pour les noms des filières et des semestres
-    const filieres = {
-        1: "Logistique & Transport",
-        2: "Intelligence Artificielle & Big Data",
-        3: "Informatique & Systèmes",
-        4: "LF Génie Civil",
-        5: "LF Génie Mécanique",
-        6: "LF Génie Électrique"
-    };
-
-    const semestres = {
-        1: "Semestre 1",
-        2: "Semestre 2"
-    };
-
-    // Récupérer les noms des filières et semestres
-    const filiereNom = filieres[filiere] || "Non spécifié";
-    const semestreNom = semestres[semestre] || "Non spécifié";
-
-    // Afficher les noms dans la console
-    console.log(chalk.green(`Filière (Nom): ${filiereNom}`));
-    console.log(chalk.green(`Semestre (Nom): ${semestreNom}`));
-
-    // Créer un nouveau classeur Excel
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Informations');
-
-    // Ajouter les en-têtes
-    worksheet.columns = [
-        { header: 'Nom', key: 'nom', width: 30 },
-        { header: 'Prénom', key: 'prenom', width: 30 },
-        { header: 'Date de Naissance', key: 'date_naissance', width: 20 },
-        { header: 'Adresse', key: 'address', width: 50 },
-        { header: 'Numéro de Téléphone', key: 'numero', width: 20 },
-        { header: 'Email', key: 'email', width: 30 },
-        { header: 'Filière', key: 'filiere', width: 40 },
-        { header: 'Semestre', key: 'semestre', width: 20 }
-    ];
-
-    // Ajouter les données
-    worksheet.addRow({
-        nom: nom,
-        prenom: prenom,
-        date_naissance: date_naissance,
-        address: address,
-        numero: numero,
-        email: email,
-        filiere: filiereNom,
-        semestre: semestreNom
-    });
-
-    // Définir le chemin du fichier Excel
-    const excelPath = `./${nom}_${prenom}_informations.xlsx`;
-
-    // Enregistrer le fichier Excel
-    await workbook.xlsx.writeFile(excelPath);
-
-    // Répondre au client
-    res.send(`Données reçues avec succès ! Fichier Excel généré à l'adresse : ${excelPath}`);
-});
-
-// Démarrer le serveur
-app.listen(PORT, () => {
-    console.log(chalk.green(`Serveur en cours d'exécution sur http://localhost:${PORT}`));
-});
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+document.getElementById(" submit").addEventListener('click', function(e){
+    set(ref(db, 'nom/' + document.getElementById("nom").value),{
+    Nom : document.getElementById("nom").value,
+    Prénoms :  document.getElementById("prenom").value,
+    Date de Naissance : document.getElementById("date_naissance").value,
+    Adresse : document.getElementById("address").value,
+    Numéro de Téléphone : document.getElementById("numero").value,
+    Email : document.getElementById("email").value,
+    Filière : document.getElementById("filiere").value,
+    Semestre en Cours : document.getElementById("semestre").value,
+        })
+alert(" Enregistrement réussi ! ");
+})
