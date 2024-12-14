@@ -67,15 +67,17 @@
             padding-top: 10px;
         }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="logo">
             <img src="https://media.licdn.com/dms/image/C4E0BAQFvQxT6RrCAuw/company-logo_200_200/0/1678781271799/cole_polytechnique_de_lom_ul_logo?e=2147483647&v=beta&t=k34jtQ3j3yEjx8moo3BhFxLyD_OjgnpkUtQbxIgM7lc" alt="Logo 1">
             <img src="https://th.bing.com/th/id/R.2b5f2a454d72746db61f581f3a9f0e06?rik=hdzcK33CJzbV1w&pid=ImgRaw&r=0" alt="Logo 2">
-            </div>
+        </div>
         <h2>Enregistrement Des Étudiants De La Licence Fondamentale</h2>
-        <form id="registrationForm" action="https://formspree.io/f/movqzoqr" method="POST">
+        <form id="registrationForm" action="#" method="POST">
             <div id="inputFields"></div>
             <button type="button" id="nextButton">Suivant</button>
             <input type="submit" value="Soumettre">
@@ -90,7 +92,6 @@
             Votre navigateur ne prend pas en charge la balise vidéo.
         </video>
     </div>
-
     <!-- Section Documents -->
     <div class="documents">
         <h3>Télécharger des Documents d'actualité</h3>
@@ -98,15 +99,11 @@
         <a href="Evaluation_Sommative_meca.pdf" target="_blank">Evaluation mécanique 2</a><br>
         <a href="Examen_PHY1120.pdf" target="_blank">Evaluation mécanique 3</a><br>
     </div>
-
-    <!-- Inclure Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-    <!-- Inclure votre fichier JavaScript -->
-    <script src="app.js">// Configuration Firebase
-const firebaseConfig = {
+    <script>
+       const firebaseConfig = {
   apiKey: "AIzaSyAkGsIfvc7VvLG1m82OpyMq6C-ZcBmWQwk",
   authDomain: "mon-projet-9a526.firebaseapp.com",
+  databaseURL: "https://mon-projet-9a526-default-rtdb.firebaseio.com",
   projectId: "mon-projet-9a526",
   storageBucket: "mon-projet-9a526.firebasestorage.app",
   messagingSenderId: "149961784280",
@@ -114,94 +111,114 @@ const firebaseConfig = {
   measurementId: "G-7TCQDDHL0L"
 };
 
-// Initialiser Firebase
-firebase.initializeApp(firebaseConfig);
+        // Initialiser Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-// Gestionnaire de soumission du formulaire
-const form = document.getElementById('registrationForm');
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
+        const form = document.getElementById('registrationForm');
+        const summaryDiv = document.getElementById('summary');
+        const nextButton = document.getElementById('nextButton');
+        let currentStep = 0;
+        const steps = [
+            { label: "Nom:", type: "text", id: "nom" },
+            { label: "Prénoms:", type: "text", id: "prenom" },
+            { label: "Date de Naissance:", type: "date", id: "date_naissance" },
+            { label: "Adresse:", type: "text", id: "address" },
+            { label: "Numéro de Téléphone:", type: "tel", id: "numero" },
+            { label: "Email:", type: "email", id: "email" },
+            { label: "Filière:", type: "select", id: "filiere", options: [
+                { value: "", text: "Sélectionnez votre Filière" },
+                { value: "1", text: "Logistique & Transport" },
+                { value: "2", text: "Intelligence Artificielle & Big Data" },
+                { value: "3", text: "Informatique & Systèmes" },
+                { value: "4", text: "LF Génie Civil" },
+                { value: "5", text: "LF Génie Mécanique" },
+                { value: "6", text: "LF Génie Électrique" }
+            ]},
+            { label: "Semestre en Cours:", type: "select", id: "semestre", options: [
+                { value: "", text: "Sélectionnez un semestre" },
+                { value: "1", text: "Semestre 1" },
+                { value: "2", text: "Semestre 2" }
+            ]}
+        ];
 
-    // Récupérer les données du formulaire
-    const studentData = {
-        nom: document.getElementById('nom').value,
-        prenom: document.getElementById('prenom').value,
-        date_naissance: document.getElementById('date_naissance').value,
-        address: document.getElementById('address').value,
-        numero: document.getElementById('numero').value,
-        email: document.getElementById('email').value,
-        filiere: document.getElementById('filiere').value,
-        semestre: document.getElementById('semestre').value
-    };
+        nextButton.addEventListener('click', showNextStep);
 
-    // Envoyer les données à Firebase
-    firebase.database().ref('students').push(studentData)
-        .then(() => {
-            alert('Données enregistrées avec succès !');
-            form.reset();
-        })
-        .catch(error => {
-            console.error('Erreur lors de l\'enregistrement des données :', error);
-        });
-});
+        function showNextStep() {
+            if (currentStep < steps.length) {
+                const fieldContainer = document.createElement('div');
+                fieldContainer.classList.add('field');
+                const step = steps[currentStep];
+                const label = document.createElement('label');
+                label.setAttribute('for', step.id);
+                label.textContent = step.label;
+                fieldContainer.appendChild(label);
+                let inputElement;
+                if (step.type === 'select') {
+                    inputElement = document.createElement('select');
+                    inputElement.id = step.id;
+                    inputElement.name = step.id;
+                    step.options.forEach(option => {
+                        const opt = document.createElement('option');
+                        opt.value = option.value;
+                        opt.textContent = option.text;
+                        inputElement.appendChild(opt);
+                    });
+                } else {
+                    inputElement = document.createElement('input');
+                    inputElement.type = step.type;
+                    inputElement.id = step.id;
+                    inputElement.name = step.id;
+                    inputElement.required = true;
+                }
+                fieldContainer.appendChild(inputElement);
+                document.getElementById('inputFields').appendChild(fieldContainer);
+                // Animer l'affichage du champ
+                setTimeout(() => {
+                    inputElement.style.opacity = 1; // Rendre visible
+                }, 100);
+                currentStep++;
+                // Afficher le bouton Soumettre si tous les champs sont remplis
+                if (currentStep === steps.length) {
+                    nextButton.style.display = 'none'; // Cacher le bouton "Suivant"
+                    showSummary(); // Afficher le résumé
+                }
+            }
+        }
 
-const summaryDiv = document.getElementById('summary');
-const nextButton = document.getElementById('nextButton');
-let currentStep = 0;
-
-const steps = [
-    { label: "Nom:", type: "text", id: "nom" },
-    { label: "Prénoms:", type: "text", id: "prenom" },
-    { label: "Date de Naissance:", type: "date", id: "date_naissance" },
-    { label: "Adresse:", type: "text", id: "address" },
-    { label: "Numéro de Téléphone:", type: "tel", id: "numero" },
-    { label: "Email:", type: "email", id: "email" },
-    { label: "Filière:", type: "select", id: "filiere", options: [
-        { value: "", text: "Sélectionnez votre Filière" },
-        { value: "1", text: "Logistique & Transport" },
-        { value: "2", text: "Intelligence Artificielle & Big Data" },
-        { value: "3", text: "Informatique & Systèmes" },
-        { value: "4", text: "LF Génie Civil" },
-        { value: "5", text: "LF Génie Mécanique" },
-        { value: "6", text: "LF Génie Électrique" }
-    ]},
-    { label: "Semestre en Cours:", type: "select", id: "semestre", options: [
-        { value: "", text: "Sélectionnez un semestre" },
-        { value: "1", text: "Semestre 1" },
-        { value: "2", text: "Semestre 2" }
-    ]}
-];
-
-nextButton.addEventListener('click', showNextStep);
-
-function showNextStep() {
-    if (currentStep < steps.length) {
-        const fieldContainer = document.createElement('div');
-        fieldContainer.classList.add('field');
-
-        const step = steps[currentStep];
-        const label = document.createElement('label');
-        label.setAttribute('for', step.id);
-        label.textContent = step.label;
-        fieldContainer.appendChild(label);
-
-        let inputElement;
-
-        if (step.type === 'select') {
-            inputElement = document.createElement('select');
-            inputElement.id = step.id;
-            inputElement.name = step.id;
-            step.options.forEach(option => {
-                const opt = document.createElement('option');
-                opt.value = option.value;
-                opt.textContent = option.text;
-                inputElement.appendChild(opt);
+        function showSummary() {
+            summaryDiv.classList.remove('hidden');
+            summaryDiv.innerHTML = "<h3>Informations Fournies</h3>";
+            steps.forEach(step => {
+                const value = document.getElementById(step.id).value;
+                summaryDiv.innerHTML += `<p>${step.label} ${value}</p>`;
             });
-        } else {
-            inputElement = document.createElement('input');
-            inputElement.type = step.type;
-            inputElement.id = step.id;
-            inputElement.name = step.id;
-            inputElement.required =[_{{{CITATION{{{_1{](https://github.com/wf3-fullstack/cours/tree/7499c92239d3ef3543147adf883b5734826b46bc/vuejs%2F_cours.md)</script>
+            // Afficher le bouton Soumettre
+            form.querySelector('input[type="submit"]').style.display = 'block';
+        }
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            const formData = {};
+            steps.forEach(step => {
+                formData[step.id] = document.getElementById(step.id).value;
+            });
+
+            // Enregistrer les données dans Firebase
+            database.ref('inscriptions').push(formData)
+                .then(() => {
+                    alert('Données envoyées avec succès!');
+                    form.reset(); // Réinitialiser le formulaire
+                    summaryDiv.classList.add('hidden'); // Cacher le résumé
+                })
+                .catch((error) => {
+                    console.error('Erreur lors de l\'envoi des données :', error);
+                });
+        });
+
+        // Commencer à afficher le premier champ
+        showNextStep();
+    </script>
 </body>
 </html>
