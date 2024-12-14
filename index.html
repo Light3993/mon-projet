@@ -77,6 +77,28 @@
             height: auto; /* Hauteur automatique pour maintenir le ratio */
         }
     </style>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+
+        // Votre configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkGsIfvc7VvLG1m82OpyMq6C-ZcBmWQwk",
+            authDomain: "mon-projet-9a526.firebaseapp.com",
+            projectId: "mon-projet-9a526",
+            storageBucket: "mon-projet-9a526.firebasestorage.app",
+            messagingSenderId: "149961784280",
+            appId: "1:149961784280:web:72ce7869d1dbb5259c90ad",
+            measurementId: "G-7TCQDDHL0L"
+        };
+
+        // Initialiser Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+    </script>
 </head>
 <body>
     <div class="container">
@@ -200,9 +222,34 @@
             form.querySelector('input[type="submit"]').style.display = 'block';
         }
 
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Empêche l'envoi du formulaire par défaut
+            const formData = {
+                nom: document.getElementById('nom').value,
+                prenom: document.getElementById('prenom').value,
+                date_naissance: document.getElementById('date_naissance').value,
+                address: document.getElementById('address').value,
+                numero: document.getElementById('numero').value,
+                email: document.getElementById('email').value,
+                filiere: document.getElementById('filiere').value,
+                semestre: document.getElementById('semestre').value
+            };
+
+            try {
+                const docRef = await addDoc(collection(db, "etudiants"), formData);
+                console.log("Document écrit avec ID : ", docRef.id);
+                alert("Les données ont été envoyées avec succès !");
+                // Réinitialiser le formulaire après soumission
+                form.reset();
+                summaryDiv.classList.add('hidden'); // Cacher le résumé
+            } catch (e) {
+                console.error("Erreur lors de l'ajout du document : ", e);
+                alert("Une erreur s'est produite lors de l'envoi des données.");
+            }
+        });
+
         // Commencer à afficher le premier champ
         showNextStep();
     </script>
 </body>
 </html>
- 
