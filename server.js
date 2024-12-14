@@ -29,6 +29,18 @@ document.getElementById(" submit").addEventListener('click', function(e){
     Email : document.getElementById("email").value,
     Filière : document.getElementById("filiere").value,
     Semestre en Cours : document.getElementById("semestre").value,
+        });
+  
+    // Envoyer les données à Firestore
+    db.collection('etudiants').add(formData)
+        .then(() => {
+            console.log("Document écrit avec succès !");
+            // Afficher la page de connexion après l'enregistrement
+            registrationContainer.style.display = 'none';
+            loginContainer.style.display = 'block';
         })
-alert(" Enregistrement réussi ! ");
-})
+        .catch((error) => {
+            console.error("Erreur lors de l'ajout du document : ", error);
+        });
+
+});
