@@ -1,197 +1,239 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enregistrement des Étudiants de l'EPL</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: url('fotor-ai-20241211192649.jpg') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-        }
-        .container {
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
-            margin: 50px auto;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
-        h2 {
-            text-align: center;
-        }
-        input[type="text"], input[type="email"], input[type="date"], input[type="tel"], select {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            opacity: 0; /* Initialement caché */
-            transition: opacity 0.5s ease-in-out; /* Animation d'opacité */
-        }
-        input[type="submit"] {
-            background-color: #4CAF50; /* Couleur verte */
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            display: none; /* Cacher le bouton Soumettre par défaut */
-        }
-        input[type="submit"]:hover {
-            background-color: #45a049; /* Couleur au survol */
-        }
-        .logo {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .logo img {
-            width: 150px;
-            height: auto;
-        }
-        .hidden {
-            display: none;
-        }
-        .summary {
-            margin-top: 20px;
-            text-align: center;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enregistrement des Étudiants de l'EPL</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background: url('fotor-ai-20241211192649.jpg') no-repeat center center fixed;
+          background-size: cover;
+          color: white;
+      }
+      .container {
+          background-color: rgba(0, 0, 0, 0.7);
+          padding: 20px;
+          border-radius: 10px;
+          width: 400px;
+          margin: 50px auto;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+          position: relative;
+      }
+      h2 {
+          text-align: center;
+      }
+      input[type="text"], input[type="email"], input[type="date"], input[type="tel"], select {
+          width: 100%;
+          padding: 10px;
+          margin: 10px 0;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          opacity: 0; /* Initialement caché */
+          transition: opacity 0.5s ease-in-out; /* Animation d'opacité */
+      }
+      input[type="file"] {
+          opacity: 0; /* Initialement caché */
+          transition: opacity 0.5s ease-in-out; /* Animation d'opacité */
+      }
+      input[type="submit"] {
+          background-color: #4CAF50; /* Couleur verte */
+          color: white;
+          padding: 10px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          width: 100%;
+          display: none; /* Cacher le bouton Soumettre par défaut */
+      }
+      input[type="submit"]:hover {
+          background-color: #45a049; /* Couleur au survol */
+      }
+      .logo {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          margin-bottom: 20px;
+      }
+      .logo img {
+          width: 150px;
+          height: auto;
+      }
+      .hidden {
+          display: none;
+      }
+      .summary {
+          margin-top: 20px;
+          text-align: center;
+          border-top: 1px solid #ccc;
+          padding-top: 10px;
+      }
+      .photo-preview {
+          margin-top: 10px;
+          text-align: center;
+      }
+      .photo-preview img {
+          max-width: 100px;
+          border-radius: 50%;
+      }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
-            <img src="https://media.licdn.com/dms/image/C4E0BAQFvQxT6RrCAuw/company-logo_200_200/0/1678781271799/cole_polytechnique_de_lom_ul_logo?e=2147483647&v=beta&t=k34jtQ3j3yEjx8moo3BhFxLyD_OjgnpkUtQbxIgM7lc" alt="Logo 1">
-            <img src="https://th.bing.com/th/id/R.2b5f2a454d72746db61f581f3a9f0e06?rik=hdzcK33CJzbV1w&pid=ImgRaw&r=0" alt="Logo 2">
-        </div>
-        <h2>Enregistrement Des Étudiants De La Licence Fondamentale</h2>
-        <form id="registrationForm" action="https://formspree.io/f/movqzoqr" method="POST">
-            <div id="inputFields"></div>
-            <button type="button" id="nextButton">Suivant</button>
-            <input type="submit" value="Soumettre">
-        </form>
-        <div id="summary" class="summary hidden"></div>
-    </div>
-    <!-- Section Vidéo -->
-    <div class="video-container">
-        <h3>Visionnez notre vidéo du jour</h3>
-        <video controls>
-            <source src="Learn Python in an Animated Way ｜ Log2Base2.mp4" type="video/mp4">
-            Votre navigateur ne prend pas en charge la balise vidéo.
-        </video>
-    </div>
+  <div class="container">
+      <div class="logo">
+          <img src="https://media.licdn.com/dms/image/C4E0BAQFvQxT6RrCAuw/company-logo_200_200/0/1678781271799/cole_polytechnique_de_lom_ul_logo?e=2147483647&v=beta&t=k34jtQ3j3yEjx8moo3BhFxLyD_OjgnpkUtQbxIgM7lc" alt="Logo 1">
+          <img src="https://th.bing.com/th/id/R.2b5f2a454d72746db61f581f3a9f0e06?rik=hdzcK33CJzbV1w&pid=ImgRaw&r=0" alt="Logo 2">
+      </div>
+      <h2>Enregistrement Des Étudiants De La Licence Fondamentale</h2>
+      <form id="registrationForm" action="https://formspree.io/f/movqzoqr" method="POST">
+          <div id="inputFields"></div>
+          <button type="button" id="nextButton">Suivant</button>
+          <input type="submit" value="Soumettre">
+      </form>
+      <div id="summary" class="summary hidden"></div>
+  </div>
+  <!-- Section Vidéo -->
+  <div class="video-container">
+      <h3>Visionnez notre vidéo du jour</h3>
+      <video controls>
+          <source src="Learn Python in an Animated Way ｜ Log2Base2.mp4" type="video/mp4">
+          Votre navigateur ne prend pas en charge la balise vidéo.
+      </video>
+  </div>
 
-    <!-- Section Documents -->
-    <div class="documents">
-        <h3>Télécharger des Documents d'actualité</h3>
-        <a href="evaluation_som_mec_EPL.pdf" target="_blank">Evaluation mécanique 1</a><br>
-        <a href="Evaluation_Sommative_meca.pdf" target="_blank">Evaluation mécanique 2</a><br>
-        <a href="Examen_PHY1120.pdf" target="_blank">Evaluation mécanique 3</a><br>
-    </div>
+  <!-- Section Documents -->
+  <div class="documents">
+      <h3>Télécharger des Documents d'actualité</h3>
+      <a href="evaluation_som_mec_EPL.pdf" target="_blank">Evaluation mécanique 1</a><br>
+      <a href="Evaluation_Sommative_meca.pdf" target="_blank">Evaluation mécanique 2</a><br>
+      <a href="Examen_PHY1120.pdf" target="_blank">Evaluation mécanique 3</a><br>
+  </div>
 
-    <script>
-        const form = document.getElementById('registrationForm');
-        const summaryDiv = document.getElementById('summary');
-        const nextButton = document.getElementById('nextButton');
-        let currentStep = 0;
+  <script>
+      const form = document.getElementById('registrationForm');
+      const summaryDiv = document.getElementById('summary');
+      const nextButton = document.getElementById('nextButton');
+      let currentStep = 0;
 
-        const steps = [
-            { label: "Nom:", type: "text", id: "nom" },
-            { label: "Prénoms:", type: "text", id: "prenom" },
-            { label: "Date de Naissance:", type: "date", id: "date_naissance" },
-            { label: "Adresse:", type: "text", id: "address" },
-            { label: "Numéro de Téléphone:", type: "tel", id: "numero" },
-            { label: "Email:", type: "email", id: "email" },
-            { label: "Filière:", type: "select", id: "filiere", options: [
-                { value: "", text: "Sélectionnez votre Filière" },
-                { value: "1", text: "Logistique & Transport" },
-                { value: "2", text: "Intelligence Artificielle & Big Data" },
-                { value: "3", text: "Informatique & Systèmes" },
-                { value: "4", text: "LF Génie Civil" },
-                { value: "5", text: "LF Génie Mécanique" },
-                { value: "6", text: "LF Génie Électrique" }
-            ]},
-            { label: "Semestre en Cours:", type: "select", id: "semestre", options: [
-                { value: "", text: "Sélectionnez un semestre" },
-                { value: "1", text: "Semestre 1" },
-                { value: "2", text: "Semestre 2" }
-            ]}
-        ];
+      const steps = [
+          { label: "Nom:", type: "text", id: "nom" },
+          { label: "Prénoms:", type: "text", id: "prenom" },
+          { label: "Date de Naissance:", type: "date", id: "date_naissance" },
+          { label: "Adresse:", type: "text", id: "address" },
+          { label: "Numéro de Téléphone:", type: "tel", id: "numero" },
+          { label: "Email:", type: "email", id: "email" },
+          { label: "Filière:", type: "select", id: "filiere", options: [
+              { value: "", text: "Sélectionnez votre Filière" },
+              { value: "1", text: "Logistique & Transport" },
+              { value: "2", text: "Intelligence Artificielle & Big Data" },
+              { value: "3", text: "Informatique & Systèmes" },
+              { value: "4", text: "LF Génie Civil" },
+              { value: "5", text: "LF Génie Mécanique" },
+              { value: "6", text: "LF Génie Électrique" }
+          ]},
+          { label: "Semestre en Cours:", type: "select", id: "semestre", options: [
+              { value: "", text: "Sélectionnez un semestre" },
+              { value: "1", text: "Semestre 1" },
+              { value: "2", text: "Semestre 2" }
+          ]},
+          { label: "Téléchargez votre photo:", type: "file", id: "photo" }
+      ];
 
-        nextButton.addEventListener('click', showNextStep);
+      nextButton.addEventListener('click', showNextStep);
 
-        function showNextStep() {
-            if (currentStep < steps.length) {
-                const fieldContainer = document.createElement('div');
-                fieldContainer.classList.add('field');
+      function showNextStep() {
+          if (currentStep < steps.length) {
+              const fieldContainer = document.createElement('div');
+              fieldContainer.classList.add('field');
 
-                const step = steps[currentStep];
-                const label = document.createElement('label');
-                label.setAttribute('for', step.id);
-                label.textContent = step.label;
-                fieldContainer.appendChild(label);
+              const step = steps[currentStep];
+              const label = document.createElement('label');
+              label.setAttribute('for', step.id);
+              label.textContent = step.label;
+              fieldContainer.appendChild(label);
 
-                let inputElement;
+              let inputElement;
 
-                if (step.type === 'select') {
-                    inputElement = document.createElement('select');
-                    inputElement.id = step.id;
-                    inputElement.name = step.id;
-                    step.options.forEach(option => {
-                        const opt = document.createElement('option');
-                        opt.value = option.value;
-                        opt.textContent = option.text;
-                        inputElement.appendChild(opt);
-                    });
-                } else {
-                    inputElement = document.createElement('input');
-                    inputElement.type = step.type;
-                    inputElement.id = step.id;
-                    inputElement.name = step.id;
-                    inputElement.required = true;
-                }
+              if (step.type === 'select') {
+                  inputElement = document.createElement('select');
+                  inputElement.id = step.id;
+                  inputElement.name = step.id;
+                  step.options.forEach(option => {
+                      const opt = document.createElement('option');
+                      opt.value = option.value;
+                      opt.textContent = option.text;
+                      inputElement.appendChild(opt);
+                  });
+              } else if (step.type === 'file') {
+                  inputElement = document.createElement('input');
+                  inputElement.type = step.type;
+                  inputElement.id = step.id;
+                  inputElement.name = step.id;
+                  inputElement.accept = "image/*"; // Accepter uniquement les images
+                  inputElement.addEventListener('change', previewPhoto);
+              } else {
+                  inputElement = document.createElement('input');
+                  inputElement.type = step.type;
+                  inputElement.id = step.id;
+                  inputElement.name = step.id;
+                  inputElement.required = true;
+              }
 
-                fieldContainer.appendChild(inputElement);
-                document.getElementById('inputFields').appendChild(fieldContainer);
+              fieldContainer.appendChild(inputElement);
+              document.getElementById('inputFields').appendChild(fieldContainer);
 
-                // Animer l'affichage du champ
-                setTimeout(() => {
-                    inputElement.style.opacity = 1; // Rendre visible
-                }, 100);
+              // Animer l'affichage du champ
+              setTimeout(() => {
+                  inputElement.style.opacity = 1; // Rendre visible
+              }, 100);
 
-                currentStep++;
+              currentStep++;
 
-                // Afficher le bouton Soumettre si tous les champs sont remplis
-                if (currentStep === steps.length) {
-                    nextButton.style.display = 'none'; // Cacher le bouton "Suivant"
-                    showSummary(); // Afficher le résumé
-                }
-            }
-        }
+              // Afficher le bouton Soumettre si tous les champs sont remplis
+              if (currentStep === steps.length) {
+                  nextButton.style.display = 'none'; // Cacher le bouton "Suivant"
+                  showSummary(); // Afficher le résumé
+              }
+          }
+      }
 
-        function showSummary() {
-            summaryDiv.classList.remove('hidden');
-            summaryDiv.innerHTML = "<h3>Informations Fournies</h3>";
-            steps.forEach(step => {
-                const value = document.getElementById(step.id).value;
-                summaryDiv.innerHTML += `<p>${step.label} ${value}</p>`;
-            });
-            // Afficher le bouton Soumettre
-            form.querySelector('input[type="submit"]').style.display = 'block';
-        }
+      function previewPhoto() {
+          const file = this.files[0];
+          const reader = new FileReader();
+          reader.onload = function(e) {
+              const previewContainer = document.createElement('div');
+              previewContainer.classList.add('photo-preview');
+              previewContainer.innerHTML = `<h4>Aperçu de la photo:</h4><img src="${e.target.result}" alt="Aperçu de la photo">`;
+              document.getElementById('inputFields').appendChild(previewContainer);
+          }
+          reader.readAsDataURL(file);
+      }
 
-        // Commencer à afficher le premier champ
-        showNextStep();
-    </script>
+      function showSummary() {
+          summaryDiv.classList.remove('hidden');
+          summaryDiv.innerHTML = "<h3>Informations Fournies</h3>";
+          steps.forEach(step => {
+              const value = document.getElementById(step.id).value;
+              summaryDiv.innerHTML += `<p>${step.label} ${value}</p>`;
+          });
+          // Afficher la photo dans le résumé
+          const photoInput = document.getElementById('photo');
+          if (photoInput.files.length > 0) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                  summaryDiv.innerHTML += `<h4>Aperçu de la photo:</h4><img src="${e.target.result}" alt="Aperçu de la photo" style="max-width:100px; border-radius:50%;">`;
+              }
+              reader.readAsDataURL(photoInput.files[0]);
+          }
+          // Afficher le bouton Soumettre
+          form.querySelector('input[type="submit"]').style.display = 'block';
+      }
+
+      // Commencer à afficher le premier champ
+      showNextStep();
+  </script>
 </body>
 </html>
