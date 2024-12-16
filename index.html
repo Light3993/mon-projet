@@ -89,8 +89,21 @@
       </div>
       <h2>Enregistrement Des Étudiants De La Licence Fondamentale</h2>
 <form id="registrationForm" action="" >
-          <div id="inputFields"></div>
-          <button type="button" id="nextButton">Suivant</button>
+          <div class="inputFields"> 
+            <input type="text" id="nom" placeholder= " Nom......"/>
+          </div>
+  <button type="button" id="nextButton">Suivant</button>
+      <div class="inputFields"> 
+            <input type="text" id="prenom" placeholder= " Préom......"/>
+          </div>
+   <button type="button" id="nextButton">Suivant</button>
+   <div class="inputFields"> 
+            <input type="text" id="date_naissance" placeholder= " Date de naissance......"/>
+          </div>
+  <button type="button" id="nextButton">Suivant</button>
+   <div class="inputFields"> 
+            <input type="text" id="Adresse" placeholder= " address......"/>
+          </div>
           <input type="submit" value="Soumettre">
       </form>
       <div id="summary" class="summary hidden"></div>
@@ -113,125 +126,7 @@
   </div>
 
 
-  <script>
-      const form = document.getElementById('registrationForm');
-      const summaryDiv = document.getElementById('summary');
-      const nextButton = document.getElementById('nextButton');
-      let currentStep = 0;
 
-      const steps = [
-          { label: "Nom:", type: "text", id: "nom" },
-          { label: "Prénoms:", type: "text", id: "prenom" },
-          { label: "Date de Naissance:", type: "date", id: "date_naissance" },
-          { label: "Adresse:", type: "text", id: "address" },
-          { label: "Numéro de Téléphone:", type: "tel", id: "numero" },
-          { label: "Email:", type: "email", id: "email" },
-          { label: "Filière:", type: "select", id: "filiere", options: [
-              { value: "", text: "Sélectionnez votre Filière" },
-              { value: "1", text: "Logistique & Transport" },
-              { value: "2", text: "Intelligence Artificielle & Big Data" },
-              { value: "3", text: "Informatique & Systèmes" },
-              { value: "4", text: "LF Génie Civil" },
-              { value: "5", text: "LF Génie Mécanique" },
-              { value: "6", text: "LF Génie Électrique" }
-          ]},
-          { label: "Semestre en Cours:", type: "select", id: "semestre", options: [
-              { value: "", text: "Sélectionnez un semestre" },
-              { value: "1", text: "Semestre 1" },
-              { value: "2", text: "Semestre 2" }
-          ]},
-          { label: "Téléchargez votre photo:", type: "file", id: "photo" }
-      ];
-
-      nextButton.addEventListener('click', showNextStep);
-
-      function showNextStep() {
-          if (currentStep < steps.length) {
-              const fieldContainer = document.createElement('div');
-              fieldContainer.classList.add('field');
-
-              const step = steps[currentStep];
-              const label = document.createElement('label');
-              label.setAttribute('for', step.id);
-              label.textContent = step.label;
-              fieldContainer.appendChild(label);
-
-              let inputElement;
-
-              if (step.type === 'select') {
-                  inputElement = document.createElement('select');
-                  inputElement.id = step.id;
-                  inputElement.name = step.id;
-                  step.options.forEach(option => {
-                      const opt = document.createElement('option');
-                      opt.value = option.value;
-                      opt.textContent = option.text;
-                      inputElement.appendChild(opt);
-                  });
-              } else if (step.type === 'file') {
-                  inputElement = document.createElement('input');
-                  inputElement.type = step.type;
-                  inputElement.id = step.id;
-                  inputElement.name = step.id;
-                  inputElement.accept = "image/*"; // Accepter uniquement les images
-                  inputElement.addEventListener('change', previewPhoto);
-              } else {
-                  inputElement = document.createElement('input');
-                  inputElement.type = step.type;
-                  inputElement.id = step.id;
-                  inputElement.name = step.id;
-                  inputElement.required = true;
-              }
-
-              fieldContainer.appendChild(inputElement);
-              document.getElementById('inputFields').appendChild(fieldContainer);
-
-              // Animer l'affichage du champ
-              setTimeout(() => {
-                  inputElement.style.opacity = 1; // Rendre visible
-              }, 100);
-
-              currentStep++;
-
-              // Afficher le bouton Soumettre si tous les champs sont remplis
-              if (currentStep === steps.length) {
-                  nextButton.style.display = 'none'; // Cacher le bouton "Suivant"
-                  showSummary(); // Afficher le résumé
-              }
-          }
-      }
-
-      function previewPhoto() {
-          const file = this.files[0];
-          const reader = new FileReader();
-          reader.onload = function(e) {
-              const previewContainer = document.createElement('div');
-              previewContainer.classList.add('photo-preview');
-              previewContainer.innerHTML = `<h4>Aperçu de la photo:</h4><img src="${e.target.result}" alt="Aperçu de la photo">`;
-              document.getElementById('inputFields').appendChild(previewContainer);
-          }
-          reader.readAsDataURL(file);
-      }
-
-      function showSummary() {
-          summaryDiv.classList.remove('hidden');
-          summaryDiv.innerHTML = "<h3>Informations Fournies</h3>";
-          steps.forEach(step => {
-              const value = document.getElementById(step.id).value;
-              summaryDiv.innerHTML += `<p>${step.label} ${value}</p>`;
-          });
-          // Afficher la photo dans le résumé
-          const photoInput = document.getElementById('photo');
-          if (photoInput.files.length > 0) {
-              const reader = new FileReader();
-              reader.onload = function(e) {
-                  summaryDiv.innerHTML += `<h4>Aperçu de la photo:</h4><img src="${e.target.result}" alt="Aperçu de la photo" style="max-width:100px; border-radius:50%;">`;
-              }
-              reader.readAsDataURL(photoInput.files[0]);
-          }
-          // Afficher le bouton Soumettre
-          form.querySelector('input[type="submit"]').style.display = 'block';
-      }
 <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
