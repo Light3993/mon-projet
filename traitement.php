@@ -8,7 +8,7 @@ try {
 }
 
 // Vérifier si le formulaire a été soumis
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["Soumettre"] == "POST") {
     // Récupérer les données du formulaire
     $nom = $_POST['nom'];
     $prenom = $_POST['prenom'];
