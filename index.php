@@ -88,7 +88,7 @@
           <img src="https://th.bing.com/th/id/R.2b5f2a454d72746db61f581f3a9f0e06?rik=hdzcK33CJzbV1w&pid=ImgRaw&r=0" alt="Logo 2">
       </div>
       <h2>Enregistrement Des Étudiants De La Licence Fondamentale</h2>
-<form id="registrationForm" action="traitement.php" method="POST" enctype="multipart/form-data">
+<form id="registrationForm" action="index.php" method="POST" enctype="multipart/form-data">
           <div id="inputFields"></div>
           <button type="button" id="nextButton">Suivant</button>
           <input type="submit" value="Soumettre">
@@ -235,5 +235,42 @@
       // Commencer à afficher le premier champ
       showNextStep();
   </script>
+  <?php
+// Connexion à la base de données SQLite
+try {
+    $pdo = new PDO('sqlite:etudiants.db');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo "Erreur de connexion : " . $e->getMessage();
+}
+
+// Vérifier si le formulaire a été soumis
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupérer les données du formulaire
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $date_naissance = $_POST['date_naissance'];
+    $adresse = $_POST['address'];
+    $numero = $_POST['numero'];
+    $email = $_POST['email'];
+    $filiere = $_POST['filiere'];
+    $semestre = $_POST['semestre'];
+
+    // Gérer le téléchargement de la photo
+    $photo = null;
+    if (isset($_FILES['photo']) && $_FILES['photo']['error'] == UPLOAD_ERR_OK) {
+        $photo = file_get_contents($_FILES['photo']['tmp_name']);
+    }
+
+    // Insérer les données dans la base de données
+    $sql = "INSERT INTO utilisateurs (nom, prenom, date_naissance, adresse, numero, email, filiere, semestre, photo) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$nom, $prenom, $date_naissance, $adresse, $numero, $email, $filiere, $semestre, $photo]);
+
+    echo "Données enregistrées avec succès !";
+}
+?>
+
 </body>
 </html>
