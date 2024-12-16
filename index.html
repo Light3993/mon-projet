@@ -112,6 +112,7 @@
       <a href="Examen_PHY1120.pdf" target="_blank">Evaluation mécanique 3</a><br>
   </div>
 
+
   <script>
       const form = document.getElementById('registrationForm');
       const summaryDiv = document.getElementById('summary');
@@ -231,11 +232,63 @@
           // Afficher le bouton Soumettre
           form.querySelector('input[type="submit"]').style.display = 'block';
       }
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDhvddViacsQl18AaJDy4YOSxPPqWqiQhE",
+    authDomain: "mon-projet-bcbbe.firebaseapp.com",
+    databaseURL: "https://mon-projet-bcbbe-default-rtdb.firebaseio.com",
+    projectId: "mon-projet-bcbbe",
+    storageBucket: "mon-projet-bcbbe.firebasestorage.app",
+    messagingSenderId: "322552707831",
+    appId: "1:322552707831:web:1a140444c3149e092331f2",
+    measurementId: "G-FRNZ5XRDCS"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  // reference your database
+    var registrationFormDB = firebase.database().ref("registrationForm");
+    document.getElementById("registrationForm").addEventListener("submit",  submitForm);
+
+    function submitForm(e){
+      e.preventDefault();
+    var nom = getElementVal('nom');
+       var prenom = getElementVal('prenom');
+       var  Date de naissance = getElementVal('date_naissance');
+       var Adresse = getElementVal('address');
+saveMessages(Nom, Prénom, Date de naissance, Adresse);
+      
+    
+    }
+    const saveMessages = ("nom","prenom", "Date de naissance", "Adresse") => {
+      var newregistrationForm = registrationFormDB.push();
+      
+      newregistrationForm.set({
+      Nom : "nom",
+        Prénom : "prenom",
+        Date de naissance : "date_naissance",
+        Adresse : "address",
+                              }
+    const getElementVal = (id) => {
+      return document.getElementById(id).value;};
+    
+      
+      
+</script>
+  
+ 
       // Commencer à afficher le premier champ
       showNextStep();
   </script>
- 
+    
 
 </body>
 </html>
